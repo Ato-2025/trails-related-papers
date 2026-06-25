@@ -70,7 +70,7 @@ const EDGE_LABELS = [
   { text: "Inform assessment of trustworthiness for\nOR represent trust decisions about", style: { left: 115, top: 225, width: 300 }, blue: true },
   { text: "Access and/or\nbuild", style: { left: 725, top: 325, width: 90 } },
   { text: "Support", style: { left: 740, top: 460, width: 90 } },
-  { text: "Rely on/use", style: { left: 990, top: 460, width: 90 } },
+  { text: "Rely on/use", style: { left: 1005, top: 430, width: 90 } },
   { text: "Interact\nwith", style: { left: 480, top: 445, width: 90 } },
   { text: "Stand in for", style: { left: 235, top: 600, width: 90 } },
   { text: "Participatory methods elicit input and\nfeedback in trust and trustworthiness", style: { left: 790, top: 700, width: 280 }, blue: true },
@@ -132,11 +132,11 @@ function Arrows() {
       <path d="M 1020 95 L 565 95 L 565 220" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
       <path d="M 855 390 L 680 390 L 680 285" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
       <path d="M 790 540 L 790 390" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
-      <path d="M 1000 540 L 1000 162" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
+      <path d="M 965 580 L 1115 580 L 1115 162" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
       <path d="M 570 540 L 570 285" stroke="#1a1a1a" strokeWidth="2" fill="none" markerEnd="url(#arrow)" />
       <path d="M 210 395 L 210 280 L 460 280" stroke="#1a1a1a" strokeWidth="2" strokeDasharray="7,6" fill="none" markerEnd="url(#arrow)" />
       <path d="M 210 555 L 210 635 L 415 635" stroke="#1a1a1a" strokeWidth="2" strokeDasharray="7,6" fill="none" markerEnd="url(#arrow)" />
-      <path d="M 1150 410 L 1150 790 L 165 790 L 165 525" stroke="#1a1a1a" strokeWidth="2" strokeDasharray="7,6" fill="none" markerEnd="url(#arrow)" />
+      <path d="M 1110 410 L 1160 410 L 1160 790 L 165 790 L 165 525" stroke="#1a1a1a" strokeWidth="2" strokeDasharray="7,6" fill="none" markerEnd="url(#arrow)" />
     </svg>
   );
 }

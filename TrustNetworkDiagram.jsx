@@ -136,13 +136,18 @@ export default function TrustNetworkDiagram() {
   const nodeDim = (id) => (active && !neighbors[active].has(id) ? 0.28 : 1);
   const edgeOn = (e) => !active || e.from === active || e.to === active;
 
-  // Scale the fixed 1180-wide canvas down to fit the available width (no clipping).
-  const wrapRef = useRef(null);
+  // Scale the fixed 1180x860 canvas to fill the viewport (fit width AND height).
+  const rootRef = useRef(null);
   const [scale, setScale] = useState(1);
   useEffect(() => {
-    const el = wrapRef.current;
+    const el = rootRef.current;
     if (!el) return;
-    const measure = () => setScale(Math.min(1, el.clientWidth / W));
+    const PAD = 36;
+    const measure = () => {
+      const w = el.clientWidth - PAD * 2;
+      const h = el.clientHeight - PAD * 2;
+      setScale(Math.max(0.2, Math.min(w / W, h / H, 1.8)));
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
@@ -159,7 +164,7 @@ export default function TrustNetworkDiagram() {
   }, [selectedId]);
 
   return (
-    <div style={{ width: "100%", background: PAPER, fontFamily: FONT, color: INK }}>
+    <div ref={rootRef} style={{ position: "relative", width: "100%", height: "100%", minHeight: "100vh", overflow: "hidden", background: PAPER, fontFamily: FONT, color: INK }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
         @keyframes tnd-march { to { stroke-dashoffset: -52; } }
@@ -171,8 +176,8 @@ export default function TrustNetworkDiagram() {
         }
       `}</style>
 
-      <div ref={wrapRef} style={{ width: "100%", padding: "24px 16px", boxSizing: "border-box" }}>
-        <div style={{ width: W * scale, height: H * scale, margin: "0 auto" }}>
+      <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <div style={{ width: W * scale, height: H * scale }}>
         <div
           style={{
             position: "relative", width: W, height: H,
@@ -303,15 +308,28 @@ export default function TrustNetworkDiagram() {
       </div>
       </div>
 
-      {/* ---- detail panel ---- */}
-      <div style={{ width: "100%", padding: "0 16px 28px", boxSizing: "border-box" }}>
-        <div style={{ width: "min(1180px, 100%)", margin: "0 auto" }}>
-          {selected ? (
+      {/* hint pinned to bottom when nothing is selected */}
+      {!selected && (
+        <div style={{ position: "absolute", bottom: 16, left: 0, right: 0, textAlign: "center", pointerEvents: "none", color: INK_SOFT, fontSize: 12.5, letterSpacing: ".3px" }}>
+          Select a node to read its role and trace its connections.
+        </div>
+      )}
+
+      {/* ---- detail panel (slide-up overlay) ---- */}
+      <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, display: "flex", justifyContent: "center", padding: 16, pointerEvents: "none" }}>
+        <div style={{
+          width: "min(1180px, calc(100% - 32px))",
+          transform: selected ? "translateY(0)" : "translateY(140%)",
+          transition: "transform .32s cubic-bezier(.2,.7,.2,1)",
+          pointerEvents: selected ? "auto" : "none",
+        }}>
+          {selected && (
             <div style={{
               position: "relative", background: "#fff",
               border: `1px solid ${mix(PAPER, INK, 0.16)}`, borderRadius: 14,
               borderLeft: `6px solid ${selected.color}`,
-              padding: "20px 22px", boxShadow: "0 14px 36px -26px rgba(28,34,48,.5)",
+              padding: "20px 22px", boxShadow: "0 24px 50px -28px rgba(28,34,48,.55)",
+              maxHeight: "44vh", overflow: "auto",
             }}>
               <button
                 onClick={() => setSelectedId(null)}
@@ -348,10 +366,6 @@ export default function TrustNetworkDiagram() {
                 </div>
               )}
             </div>
-          ) : (
-            <p style={{ margin: 0, padding: "14px 0 4px", color: INK_SOFT, fontSize: 12.5, textAlign: "center", letterSpacing: ".3px" }}>
-              Select a node to read its role and trace its connections.
-            </p>
           )}
         </div>
       </div>

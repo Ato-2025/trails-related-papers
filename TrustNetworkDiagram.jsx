@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { X, ArrowRight, ArrowLeft } from "lucide-react";
 
 /* ============================================================
@@ -136,6 +136,19 @@ export default function TrustNetworkDiagram() {
   const nodeDim = (id) => (active && !neighbors[active].has(id) ? 0.28 : 1);
   const edgeOn = (e) => !active || e.from === active || e.to === active;
 
+  // Scale the fixed 1180-wide canvas down to fit the available width (no clipping).
+  const wrapRef = useRef(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const measure = () => setScale(Math.min(1, el.clientWidth / W));
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const selected = selectedId ? NODES[selectedId] : null;
   const connections = useMemo(() => {
     if (!selectedId) return { out: [], inc: [] };
@@ -158,10 +171,12 @@ export default function TrustNetworkDiagram() {
         }
       `}</style>
 
-      <div className="tnd-canvas-wrap">
+      <div ref={wrapRef} style={{ width: "100%", padding: "24px 16px", boxSizing: "border-box" }}>
+        <div style={{ width: W * scale, height: H * scale, margin: "0 auto" }}>
         <div
           style={{
-            position: "relative", width: W, height: H, flex: "0 0 auto",
+            position: "relative", width: W, height: H,
+            transform: `scale(${scale})`, transformOrigin: "top left",
             background: PAPER,
             backgroundImage: `radial-gradient(${mix(PAPER, INK, 0.16)} 1.1px, transparent 1.1px)`,
             backgroundSize: "22px 22px",
@@ -286,10 +301,11 @@ export default function TrustNetworkDiagram() {
           </div>
         </div>
       </div>
+      </div>
 
       {/* ---- detail panel ---- */}
-      <div className="tnd-canvas-wrap" style={{ paddingTop: 0 }}>
-        <div style={{ width: W, flex: "0 0 auto" }}>
+      <div style={{ width: "100%", padding: "0 16px 28px", boxSizing: "border-box" }}>
+        <div style={{ width: "min(1180px, 100%)", margin: "0 auto" }}>
           {selected ? (
             <div style={{
               position: "relative", background: "#fff",

@@ -84,7 +84,7 @@ const EDGES = [
     ] },
   { id: "e2", from: "taiResearchTeam", to: "aiSystem", dashed: false,
     label: "Access and/or build",
-    points: [[855, 390], [680, 390], [680, 285]], labelAt: [770, 350],
+    points: [[855, 390], [700, 390], [700, 285], [670, 285]], labelAt: [770, 350],
     questions: [
       "How has trustworthiness been integrated throughout the design and development process rather than added at the end?",
       "How are failures, biases, and unintended harms identified, documented, and addressed?",

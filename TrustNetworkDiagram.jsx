@@ -1,5 +1,6 @@
 import { useState, useMemo, useRef, useEffect } from "react";
-import { X, ArrowRight, ArrowLeft, BookOpen } from "lucide-react";
+import { X, ArrowRight, ArrowLeft, BookOpen, ExternalLink } from "lucide-react";
+import RESOURCES from "./resources.json";
 
 /* ============================================================
    TRUST NETWORK DIAGRAM — TRAILS trust framework
@@ -376,17 +377,10 @@ export default function TrustNetworkDiagram() {
                 <QuestionList questions={(selNode ?? selEdge).questions} accent={accent} />
               </div>
 
-              {/* resources (stub) */}
+              {/* resources */}
               <div style={{ marginTop: 18, borderTop: `1px dashed ${mix(PAPER, INK, 0.22)}`, paddingTop: 14 }}>
-                <SectionLabel>RESOURCES</SectionLabel>
-                <div style={{
-                  display: "flex", alignItems: "center", gap: 10,
-                  background: mix(PAPER, "#fff", 0.4), border: `1px dashed ${mix(PAPER, INK, 0.3)}`,
-                  borderRadius: 10, padding: "12px 14px", color: INK_SOFT, fontSize: 12.5,
-                }}>
-                  <BookOpen size={16} style={{ flex: "0 0 auto" }} />
-                  TRAILS publications on this topic will appear here, linked from the publications pipeline.
-                </div>
+                <SectionLabel>RESOURCES · TRAILS PUBLICATIONS</SectionLabel>
+                <ResourceList papers={RESOURCES[sel.id] || []} />
               </div>
 
               {/* connections (nodes only) */}
@@ -413,6 +407,44 @@ export default function TrustNetworkDiagram() {
 
 function SectionLabel({ children }) {
   return <div style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: ".8px", color: INK_SOFT, marginBottom: 10 }}>{children}</div>;
+}
+
+function ResourceList({ papers }) {
+  if (!papers || papers.length === 0) {
+    return (
+      <div style={{ display: "flex", alignItems: "center", gap: 10, background: mix(PAPER, "#fff", 0.4), border: `1px dashed ${mix(PAPER, INK, 0.3)}`, borderRadius: 10, padding: "12px 14px", color: INK_SOFT, fontSize: 12.5 }}>
+        <BookOpen size={16} style={{ flex: "0 0 auto" }} />
+        No TRAILS publications tagged for this yet. Tag papers in Zotero with the matching <code style={{ fontFamily: FONT }}>tf:</code> tag and re-run fetch_papers.py.
+      </div>
+    );
+  }
+  return (
+    <div style={{ display: "grid", gap: 8 }}>
+      {papers.map((p, i) => <ResourceLink key={i} p={p} />)}
+    </div>
+  );
+}
+
+function ResourceLink({ p }) {
+  const meta = [p.authors, p.year].filter(Boolean).join(" · ");
+  const inner = (
+    <>
+      <BookOpen size={15} style={{ flex: "0 0 auto", color: INK_SOFT, marginTop: 2 }} />
+      <span style={{ minWidth: 0 }}>
+        <span style={{ fontSize: 13, fontWeight: 600, color: INK, display: "block", lineHeight: 1.4 }}>{p.title || "(untitled)"}</span>
+        {meta && <span style={{ fontSize: 11.5, color: INK_SOFT }}>{meta}</span>}
+      </span>
+      {p.url && <ExternalLink size={13} style={{ flex: "0 0 auto", color: INK_SOFT, marginLeft: "auto", marginTop: 3 }} />}
+    </>
+  );
+  const style = {
+    display: "flex", alignItems: "flex-start", gap: 9, textDecoration: "none",
+    background: mix(PAPER, "#fff", 0.55), border: `1px solid ${mix(PAPER, INK, 0.16)}`,
+    borderRadius: 10, padding: "10px 12px", color: INK,
+  };
+  return p.url
+    ? <a href={p.url} target="_blank" rel="noreferrer" style={{ ...style, cursor: "pointer" }}>{inner}</a>
+    : <div style={style}>{inner}</div>;
 }
 
 function QuestionList({ questions, accent }) {

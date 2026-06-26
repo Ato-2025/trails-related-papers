@@ -1,0 +1,43 @@
+{
+  "trustProxies": [
+    {
+      "title": "The epistemologies of trust: conflicting worldviews in the \u201cTrustworthy AI\u201d discourse",
+      "authors": "Broniatowski, Joubin, Aaronson, et al.",
+      "year": "2026",
+      "url": "https://doi.org/10.1007/s43681-026-01087-2",
+      "type": "journalArticle"
+    }
+  ],
+  "aiSystem": [
+    {
+      "title": "Surveilling Suitability: How AI Hiring Interviews Impact Job Seekers with Disabilities",
+      "authors": "Zhao, Clark, Hong, et al.",
+      "year": "2026",
+      "url": "https://programs.sigchi.org/chi/2026/program/content/221867",
+      "type": "conferencePaper"
+    }
+  ],
+  "taiResearchTeam": [
+    {
+      "title": "The epistemologies of trust: conflicting worldviews in the \u201cTrustworthy AI\u201d discourse",
+      "authors": "Broniatowski, Joubin, Aaronson, et al.",
+      "year": "2026",
+      "url": "https://doi.org/10.1007/s43681-026-01087-2",
+      "type": "journalArticle"
+    }
+  ],
+  "trustInstitution": [],
+  "trustIntermediaries": [],
+  "trustRepresentatives": [],
+  "trustPublic": [
+    {
+      "title": "Surveilling Suitability: How AI Hiring Interviews Impact Job Seekers with Disabilities",
+      "authors": "Zhao, Clark, Hong, et al.",
+      "year": "2026",
+      "url": "https://programs.sigchi.org/chi/2026/program/content/221867",
+      "type": "conferencePaper"
+    }
+  ],
+  "trustedInfrastructure": [],
+  "e1": [], "e2": [], "e3": [], "e4": [], "e5": [], "e6": [], "e7": [], "participatory": []
+}

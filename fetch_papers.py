@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 """
-fetch_papers.py  —  build resources.json for the TRAILS trust-framework diagram.
+fetch_papers.py  —  build resources.json from ONLY the TRAILS Publications collection.
 
-Reads the public TRAILS Zotero group (no API key needed) and assigns papers to
-framework components two ways:
+Source: the public TRAILS Zotero group, restricted to the "TRAILS Publications"
+collection (4FF8GQA6) and all of its sub-collections (Year 1/2/3, etc.).
+No API key needed.
 
-  1. CURATED (built in below): a hand-picked title -> component mapping, so the
-     site is populated out of the box with no Zotero tagging required.
-  2. TAGS (optional): any paper tagged in Zotero with a tf: tag, e.g.
-     tf:trust-proxies, tf:ai-system, tf:trust-public ...  is also included.
+Assigns papers to framework components two ways:
+  1. CURATED (built in below): a hand-picked title -> component mapping.
+  2. TAGS (optional): any paper tagged tf:trust-proxies, tf:ai-system, etc.
 
-A paper may land under several components. Real URLs/authors/years come straight
-from the live library. Output: resources.json keyed by diagram node/edge id.
+Outputs:
+  - resources.json          (data the diagram reads)
+  - trails_publications.txt  (every title in the collection, for re-curating)
 
 Run:  python3 fetch_papers.py
 """
@@ -23,10 +24,10 @@ import urllib.request
 from collections import defaultdict
 
 GROUP_ID = "5266609"
+TARGET_COLLECTION = "4FF8GQA6"   # "TRAILS Publications"
 BASE = f"https://api.zotero.org/groups/{GROUP_ID}"
-HEADERS = {"User-Agent": "trails-related-papers/0.3", "Zotero-API-Version": "3"}
+HEADERS = {"User-Agent": "trails-related-papers/0.4", "Zotero-API-Version": "3"}
 
-# friendly tf: tag slug -> diagram id
 ALIASES = {
     "trust-proxies": "trustProxies", "trustproxies": "trustProxies", "proxies": "trustProxies",
     "ai-system": "aiSystem", "aisystem": "aiSystem", "ai": "aiSystem",
@@ -40,58 +41,53 @@ ALIASES = {
     "rely-on-use": "e4", "interact": "e5", "inform": "e6",
     "stand-in-for": "e7", "participatory": "participatory",
 }
-
 ALL_KEYS = ["trustProxies", "aiSystem", "taiResearchTeam", "trustInstitution",
             "trustIntermediaries", "trustRepresentatives", "trustPublic", "trustedInfrastructure",
             "e1", "e2", "e3", "e4", "e5", "e6", "e7", "participatory"]
 
-# Curated title -> component mapping (lowercase substrings; verified against the library).
+# Curated mapping - all picks verified to be TRAILS Publications (from the 205-paper collection).
 CURATED = {
     "taiResearchTeam": [
         "epistemologies of trust",
-        "(re)conceptualizing trustworthy ai",
-        "can we make sense of the notion of trustworthy technology",
-        "formalizing trust in artificial intelligence",
-        "the values encoded in machine learning research",
-        "what we talk about when we talk about trust",
+        "fuzzy-trace theory as a source of design goals",
+        "project managers facilitate interdisciplinary collaboration",
+        "ten simple rules for building and maintaining a responsible data science",
+        "understanding the tradeoffs of human-ai system architecting",
     ],
     "trustProxies": [
-        "a survey of confidence estimation and calibration",
         "how reliable are ai user studies",
-        "stereotyping norwegian salmon",
-        "is there a trade-off between fairness and accuracy",
-        "psychometric validation of the pailq-6",
+        "the impact of explanations on fairness in human-ai decision-making",
+        "effort-aware fairness",
+        "bring your own data",
+        "llm evaluators recognize and favor their own generations",
     ],
     "aiSystem": [
         "propensitybench",
-        "mechanistic interpretability for ai safety",
-        "certified adversarial robustness via randomized smoothing",
-        "llms know more than they show",
-        "balancing safety and helpfulness in healthcare ai",
-        "challenges in guardrailing large language models for science",
+        "robustness of ai-image detectors",
+        "coercing llms to do and reveal",
+        "llm-check: investigating detection of hallucinations",
+        "can requirements engineering be used to manage systemic bias",
     ],
     "trustPublic": [
-        "how americans view ai and its impact",
-        "americans prioritize ai safety and data security",
         "lower artificial intelligence literacy predicts greater ai receptivity",
         "public concerns about ai are getting lost in translation",
-        "user attitudes and sources of ai authority in india",
-        "trust in automation: integrating empirical evidence",
         "surveilling suitability",
+        "safety perceptions of generative ai conversational agents",
+        "how probing for problems and bias affects perceptions",
     ],
     "trustedInfrastructure": [
         "data governance is not ready for ai",
         "data disquiet",
         "democratizing ai: open-source scalable llm training",
-        "centering racial equity",
         "data governance mapping project",
+        "from pixels to prose",
     ],
     "trustIntermediaries": [
-        "nist ai rmp playbook",
-        "building trust in ai",
-        "detecting dataset bias in medical ai",
-        "genai in law: a guide to building trust",
+        "building trust in ai: a landscape analysis",
         "harmful deepfakes in high school contexts",
+        "missing persons: the case of national ai strategies",
+        "talking to a brick wall",
+        "do ai chatbot firms practice what they preach",
     ],
     "trustRepresentatives": [
         "connecting participatory ai to trustworthy ai",
@@ -101,9 +97,10 @@ CURATED = {
         "intergenerational ai literacy",
     ],
     "trustInstitution": [
-        "you don't trust a government vaccine",
         "trust in public health institutions moderates",
-        "trust and antitrust",
+        "the age of ai nationalism and its effects",
+        "generative ai and democratic culture",
+        "empathic engagement with the covid-19 vaccine hesitant",
     ],
 }
 
@@ -114,102 +111,114 @@ def get(url):
         return json.loads(r.read().decode("utf-8")), dict(r.headers)
 
 
-def fetch_all_items():
-    items, start, limit = [], 0, 100
+def all_collections():
+    cols, start = [], 0
     while True:
-        data, hdr = get(f"{BASE}/items/top?format=json&limit={limit}&start={start}")
-        items.extend(data)
-        total = int(hdr.get("Total-Results", len(items)))
-        start += limit
+        data, hdr = get(f"{BASE}/collections?format=json&limit=100&start={start}")
+        cols.extend(data)
+        total = int(hdr.get("Total-Results", len(cols)))
+        start += 100
         if start >= total or not data:
             break
+    return cols
+
+
+def target_collection_keys():
+    """TARGET_COLLECTION plus every sub-collection beneath it (recursively)."""
+    cols = all_collections()
+    children = defaultdict(list)
+    for c in cols:
+        parent = c["data"].get("parentCollection")
+        children[parent].append(c["data"]["key"])
+    keys, stack = set(), [TARGET_COLLECTION]
+    while stack:
+        k = stack.pop()
+        if k in keys:
+            continue
+        keys.add(k)
+        stack.extend(children.get(k, []))
+    return keys
+
+
+def fetch_collection_items(keys):
+    """Top-level items across all target collections, de-duplicated by item key."""
+    items, seen = [], set()
+    for ck in keys:
+        start = 0
+        while True:
+            data, hdr = get(f"{BASE}/collections/{ck}/items/top?format=json&limit=100&start={start}")
+            for it in data:
+                if it["key"] not in seen:
+                    seen.add(it["key"]); items.append(it)
+            total = int(hdr.get("Total-Results", len(data)))
+            start += 100
+            if start >= total or not data:
+                break
     return items
 
 
-def clean_title(s):
-    return html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
-
-
-def parse_year(date):
-    m = re.search(r"(\d{4})", date or "")
-    return m.group(1) if m else ""
-
-
-def format_authors(creators):
-    names = [c.get("lastName") or c.get("name", "") for c in creators if c.get("creatorType") == "author"]
-    names = [n for n in names if n]
-    if not names:
-        return ""
-    return ", ".join(names[:3]) + (", et al." if len(names) > 3 else "")
-
-
+def clean_title(s): return html.unescape(re.sub(r"<[^>]+>", "", s or "")).strip()
+def parse_year(d):
+    m = re.search(r"(\d{4})", d or ""); return m.group(1) if m else ""
+def format_authors(cr):
+    n = [c.get("lastName") or c.get("name", "") for c in cr if c.get("creatorType") == "author"]
+    n = [x for x in n if x]
+    return (", ".join(n[:3]) + (", et al." if len(n) > 3 else "")) if n else ""
 def best_url(d):
-    if d.get("url"):
-        return d["url"]
-    if d.get("DOI"):
-        return "https://doi.org/" + d["DOI"].strip()
-    return ""
-
-
+    return d.get("url") or ("https://doi.org/" + d["DOI"].strip() if d.get("DOI") else "")
 def normalize(tag):
-    slug = tag.split(":", 1)[1] if ":" in tag else tag
-    return re.sub(r"[\s_]+", "-", slug.strip().lower())
+    s = tag.split(":", 1)[1] if ":" in tag else tag
+    return re.sub(r"[\s_]+", "-", s.strip().lower())
 
 
 def keys_for(item):
     d = item["data"]
-    title = clean_title(d.get("title", ""))
-    tl = title.lower()
+    title = clean_title(d.get("title", "")); tl = title.lower()
     keys, unknown = set(), []
-    # curated title match
     for comp, subs in CURATED.items():
         if any(s in tl for s in subs):
             keys.add(comp)
-    # tf: tags
     for tg in d.get("tags", []):
         t = tg.get("tag", "")
         if t.lower().startswith("tf:"):
             slug = normalize(t)
-            if slug in ALIASES:
-                keys.add(ALIASES[slug])
-            else:
-                unknown.append(t)
-    paper = {
-        "title": title,
-        "authors": format_authors(d.get("creators", [])),
-        "year": parse_year(d.get("date", "")),
-        "url": best_url(d),
-        "type": d.get("itemType", ""),
-    }
+            (keys.add(ALIASES[slug]) if slug in ALIASES else unknown.append(t))
+    paper = {"title": title, "authors": format_authors(d.get("creators", [])),
+             "year": parse_year(d.get("date", "")), "url": best_url(d), "type": d.get("itemType", "")}
     return keys, paper, unknown
 
 
 def main():
-    print("Fetching TRAILS Zotero group library ...")
-    items = fetch_all_items()
-    print(f"  scanned {len(items)} items\n")
+    print("Finding the TRAILS Publications collection and its sub-collections ...")
+    keys = target_collection_keys()
+    print(f"  {len(keys)} collection(s) in scope")
+    print("Fetching their publications ...")
+    items = fetch_collection_items(keys)
+    print(f"  {len(items)} unique publications in the TRAILS Publications collection\n")
 
-    buckets = defaultdict(list)
-    seen = defaultdict(set)
-    unknown_tags = set()
-    tagged = 0
+    # write the full title list so the mapping can be refined to TRAILS pubs
+    with open("trails_publications.txt", "w", encoding="utf-8") as f:
+        for it in sorted(items, key=lambda x: clean_title(x["data"].get("title", "")).lower()):
+            d = it["data"]
+            f.write(clean_title(d.get("title", ""))[:160] + "  ||  " +
+                    ", ".join(t.get("tag", "") for t in d.get("tags", [])) + "\n")
+
+    buckets, seen, unknown_tags, tagged = defaultdict(list), defaultdict(set), set(), 0
     for it in items:
-        keys, paper, unknown = keys_for(it)
-        unknown_tags.update(unknown)
-        if keys:
+        ks, paper, unk = keys_for(it)
+        unknown_tags.update(unk)
+        if ks:
             tagged += 1
-        for k in keys:
+        for k in ks:
             sig = (paper["title"], paper["url"])
             if sig not in seen[k]:
-                seen[k].add(sig)
-                buckets[k].append(paper)
+                seen[k].add(sig); buckets[k].append(paper)
 
     resources = {k: sorted(buckets.get(k, []), key=lambda p: p["year"], reverse=True) for k in ALL_KEYS}
-
     with open("resources.json", "w", encoding="utf-8") as f:
         json.dump(resources, f, indent=2, ensure_ascii=False)
 
-    print(f"Papers assigned to at least one component: {tagged}\n")
+    print(f"Publications mapped to a component: {tagged}\n")
     print("PER COMPONENT:")
     for k in ALL_KEYS:
         if resources[k]:
@@ -217,11 +226,7 @@ def main():
     empty = [k for k in ALL_KEYS if not resources[k]]
     if empty:
         print("\n  (still empty: " + ", ".join(empty) + ")")
-    if unknown_tags:
-        print("\n  unrecognized tf: tags:")
-        for t in sorted(unknown_tags):
-            print("    " + t)
-    print("\nWrote resources.json")
+    print("\nWrote resources.json and trails_publications.txt")
 
 
 if __name__ == "__main__":

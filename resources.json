@@ -8,32 +8,32 @@
       "type": "conferencePaper"
     },
     {
-      "title": "A Psychometric Validation of the PAILQ-6: Perceived Artificial Intelligence Literacy Questionnaire",
-      "authors": "Grassini",
+      "title": "Effort-aware Fairness: Incorporating a Philosophy-informed, Human-centered Notion of Effort into Algorithmic Fairness Metrics",
+      "authors": "Nguyen, Xu, Che, et al.",
+      "year": "2025",
+      "url": "https://doi.org/10.1609/aies.v8i2.36681",
+      "type": "journalArticle"
+    },
+    {
+      "title": "LLM Evaluators Recognize and Favor Their Own Generations",
+      "authors": "Panickssery, Bowman, Feng",
       "year": "2024",
-      "url": "https://dl.acm.org/doi/10.1145/3679318.3685359",
-      "type": "conferencePaper"
+      "url": "http://arxiv.org/abs/2404.13076",
+      "type": "preprint"
     },
     {
-      "title": "A Survey of Confidence Estimation and Calibration in Large Language Models",
-      "authors": "Geng, Cai, Wang, et al.",
+      "title": "The Impact of Explanations on Fairness in Human-AI Decision-Making: Protected vs Proxy Features",
+      "authors": "Goyal, Baumler, Nguyen, et al.",
       "year": "2024",
-      "url": "https://aclanthology.org/2024.naacl-long.366/",
+      "url": "https://dl.acm.org/doi/10.1145/3640543.3645210",
       "type": "conferencePaper"
     },
     {
-      "title": "Stereotyping Norwegian Salmon: An Inventory of Pitfalls in Fairness Benchmark Datasets",
-      "authors": "Blodgett, Lopez, Olteanu, et al.",
-      "year": "2021",
-      "url": "https://aclanthology.org/2021.acl-long.81/",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Is There a Trade-Off Between Fairness and Accuracy? A Perspective Using Mismatched Hypothesis Testing",
-      "authors": "Dutta, Wei, Yueksel, et al.",
-      "year": "2020",
-      "url": "https://proceedings.mlr.press/v119/dutta20a.html",
-      "type": "conferencePaper"
+      "title": "Bring Your Own Data! Self-Supervised Evaluation for Large Language Models",
+      "authors": "Jain, Saifullah, Wen, et al.",
+      "year": "2023",
+      "url": "http://arxiv.org/abs/2306.13651",
+      "type": "preprint"
     }
   ],
   "aiSystem": [
@@ -45,49 +45,49 @@
       "type": "webpage"
     },
     {
-      "title": "PropensityBench: Evaluating Latent Safety Risks in Large Language Models via an Agentic Approach",
-      "authors": "Sehwag, Shabihi, McAvoy, et al.",
-      "year": "2025",
-      "url": "https://openreview.net/forum?id=jOTQupHx7q",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Balancing Safety and Helpfulness in Healthcare AI Assistants through Iterative Preference Alignment",
-      "authors": "Nghiem, Panda, Khatwani, et al.",
-      "year": "2025",
-      "url": "https://openreview.net/forum?id=wEN9W78TEb",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Mechanistic Interpretability for AI Safety - A Review",
-      "authors": "Bereska, Gavves",
+      "title": "Coercing LLMs to do and reveal (almost) anything",
+      "authors": "Geiping, Stein, Shu, et al.",
       "year": "2024",
-      "url": "https://openreview.net/forum?id=ePUVetPKu6",
+      "url": "https://arxiv.org/abs/2402.14020",
+      "type": "conferencePaper"
+    },
+    {
+      "title": "LLM-Check: Investigating Detection of Hallucinations in Large Language Models",
+      "authors": "Sriramanan, Bharti, Sadasivan, et al.",
+      "year": "2024",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/3c1e1fdf305195cd620c118aaa9717ad-Abstract-Conference.html",
       "type": "journalArticle"
     },
     {
-      "title": "LLMs Know More Than They Show: On the Intrinsic Representation of LLM Hallucinations",
-      "authors": "Orgad, Toker, Gekhman, et al.",
+      "title": "Robustness of AI-Image Detectors: Fundamental Limits and Practical Attacks",
+      "authors": "Saberi, Sadasivan, Rezaei, et al.",
       "year": "2024",
-      "url": "https://openreview.net/forum?id=KRnsX5Em3W",
+      "url": "https://doi.org/https://doi.org/10.48550/arXiv.2310.00076",
       "type": "conferencePaper"
     },
     {
-      "title": "Challenges in Guardrailing Large Language Models for Science",
-      "authors": "Pantha, Ramasubramanian, Gurung, et al.",
-      "year": "2024",
-      "url": "http://arxiv.org/abs/2411.08181",
-      "type": "preprint"
-    },
-    {
-      "title": "Certified Adversarial Robustness via Randomized Smoothing",
-      "authors": "Cohen, Rosenfeld, Kolter",
-      "year": "2019",
-      "url": "https://proceedings.mlr.press/v97/cohen19c.html",
+      "title": "Can Requirements Engineering Be Used to Manage Systemic Bias in AI Systems?",
+      "authors": "Broniatowski",
+      "year": "2023",
+      "url": "",
       "type": "conferencePaper"
     }
   ],
   "taiResearchTeam": [
+    {
+      "title": "Fuzzy-trace theory as a source of design goals for trustworthy artificial intelligence",
+      "authors": "Broniatowski, Reyna",
+      "year": "2027",
+      "url": "",
+      "type": "bookSection"
+    },
+    {
+      "title": "Project Managers Facilitate Interdisciplinary Collaboration in AI Research",
+      "authors": "Dalmeijer, Robinson, Cambridge, et al.",
+      "year": "2026",
+      "url": "https://papers.ssrn.com/abstract=6361038",
+      "type": "preprint"
+    },
     {
       "title": "The epistemologies of trust: conflicting worldviews in the “Trustworthy AI” discourse",
       "authors": "Broniatowski, Joubin, Aaronson, et al.",
@@ -96,78 +96,64 @@
       "type": "journalArticle"
     },
     {
-      "title": "(Re)Conceptualizing trustworthy AI: A foundation for change",
-      "authors": "Wirz, Demuth, Bostrom, et al.",
-      "year": "2025",
-      "url": "https://www.sciencedirect.com/science/article/pii/S0004370225000281",
-      "type": "journalArticle"
-    },
-    {
-      "title": "The Values Encoded in Machine Learning Research",
-      "authors": "Birhane, Kalluri, Card, et al.",
-      "year": "2022",
-      "url": "https://dl.acm.org/doi/10.1145/3531146.3533083",
+      "title": "Understanding the Tradeoffs of Human-AI System Architecting",
+      "authors": "Singh, Szajnfarber",
+      "year": "2024",
+      "url": "https://sercuarc.org/wp-content/uploads/2024/09/Slides-Understanding-the-Tradeoffs-of-Human-AI-System-Architecting.pdf",
       "type": "conferencePaper"
     },
     {
-      "title": "Formalizing Trust in Artificial Intelligence | Proceedings of the 2021 ACM Conference on Fairness, Accountability, and Transparency",
-      "authors": "Jacovi, Marasović, Miller, et al.",
-      "year": "2021",
-      "url": "https://dl.acm.org/doi/10.1145/3442188.3445923",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "What we talk about when we talk about trust: Theory of trust for AI in healthcare",
-      "authors": "Gille, Jobin, Ienca",
-      "year": "2020",
-      "url": "https://www.sciencedirect.com/science/article/pii/S2666521220300016",
-      "type": "journalArticle"
-    },
-    {
-      "title": "Can We Make Sense of the Notion of Trustworthy Technology?",
-      "authors": "Nickel, Franssen, Kroes",
-      "year": "2010",
-      "url": "https://doi.org/10.1007/s12130-010-9124-6",
+      "title": "Ten simple rules for building and maintaining a responsible data science workflow",
+      "authors": "Stoudt, Jernite, Marshall, et al.",
+      "year": "2024",
+      "url": "https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1012232",
       "type": "journalArticle"
     }
   ],
   "trustInstitution": [
+    {
+      "title": "Generative AI and Democratic Culture",
+      "authors": "Branford, Soulier, Fichtner",
+      "year": "2025",
+      "url": "https://doi.org/10.1007/s13347-025-00953-x",
+      "type": "journalArticle"
+    },
+    {
+      "title": "Empathic Engagement With the COVID-19 Vaccine Hesitant in Private Facebook Groups: A Randomized Trial",
+      "authors": "Abroms, Koban, Krishnan, et al.",
+      "year": "2024",
+      "url": "https://doi.org/10.1177/10901981231188313",
+      "type": "journalArticle"
+    },
+    {
+      "title": "The Age of AI Nationalism and Its Effects",
+      "authors": "Aaronson",
+      "year": "2024",
+      "url": "https://www.cigionline.org/publications/the-age-of-ai-nationalism-and-its-effects/",
+      "type": "report"
+    },
     {
       "title": "Trust in public health institutions moderates the effectiveness of COVID-19 vaccine discussion groups on Facebook",
       "authors": "Koban, Abroms, Napolitano, et al.",
       "year": "2023",
       "url": "https://doi.org/10.1080/17538068.2023.2283308",
       "type": "journalArticle"
-    },
-    {
-      "title": "“You don't trust a government vaccine”: Narratives of institutional trust and influenza vaccination among African American and white adults",
-      "authors": "Jamison, Quinn, Freimuth",
-      "year": "2019",
-      "url": "https://www.sciencedirect.com/science/article/pii/S0277953618306932",
-      "type": "journalArticle"
-    },
-    {
-      "title": "Trust and Antitrust",
-      "authors": "Baier",
-      "year": "1986",
-      "url": "https://www.jstor.org/stable/2381376",
-      "type": "journalArticle"
     }
   ],
   "trustIntermediaries": [
     {
-      "title": "Detecting Dataset Bias in Medical AI: A Generalized and Modality-Agnostic Auditing Framework",
-      "authors": "Drenkow, others",
+      "title": "Talking to a Brick Wall: The US Government’s Response to Public Comments on AI",
+      "authors": "Aaronson",
       "year": "2025",
       "url": "",
-      "type": "conferencePaper"
+      "type": "report"
     },
     {
-      "title": "NIST AI RMP Playbook",
-      "authors": "NIST",
-      "year": "2024",
-      "url": "https://airc.nist.gov/airmf-resources/playbook/",
-      "type": "webpage"
+      "title": "Do AI Chatbot Firms Practice What They Preach?",
+      "authors": "Moreno, Aaronson",
+      "year": "2025",
+      "url": "https://ojs.aaai.org/index.php/AAAI-SS/article/view/36867",
+      "type": "journalArticle"
     },
     {
       "title": "Building Trust in AI: A Landscape Analysis of Government AI Programs",
@@ -177,11 +163,11 @@
       "type": "report"
     },
     {
-      "title": "Building Trust in AI A Landscape Analysis of Government AI Programs",
-      "authors": "Aaronson",
+      "title": "Missing Persons: The Case of National AI Strategies",
+      "authors": "Aaronson, Zable",
       "year": "2023",
-      "url": "",
-      "type": "document"
+      "url": "https://papers.ssrn.com/abstract=4554650",
+      "type": "preprint"
     },
     {
       "title": "Harmful Deepfakes in High School Contexts: Co-designing Recommendations for Policy, Practices, and Design",
@@ -189,13 +175,6 @@
       "year": "0025",
       "url": "",
       "type": "conferencePaper"
-    },
-    {
-      "title": "GenAI in Law: A Guide to Building Trust",
-      "authors": "LexisNexis",
-      "year": "",
-      "url": "https://lexisnexis.shorthandstories.com/genai-in-law-a-guide-to-building-trust/",
-      "type": "webpage"
     }
   ],
   "trustRepresentatives": [
@@ -244,25 +223,11 @@
       "type": "conferencePaper"
     },
     {
-      "title": "Americans Prioritize AI Safety and Data Security",
-      "authors": "Gallup",
-      "year": "2025",
-      "url": "https://news.gallup.com/poll/694685/americans-prioritize-safety-data-security.aspx",
-      "type": "webpage"
-    },
-    {
-      "title": "How Americans View AI and Its Impact on People and Society",
-      "authors": "Kennedy, Yam, Kikuchi, et al.",
-      "year": "2025",
-      "url": "https://www.pewresearch.org/science/2025/09/17/how-americans-view-ai-and-its-impact-on-people-and-society/",
-      "type": "blogPost"
-    },
-    {
-      "title": "Lower Artificial Intelligence Literacy Predicts Greater AI Receptivity",
-      "authors": "Tully, Longoni, Appel",
-      "year": "2025",
-      "url": "https://doi.org/10.1177/00222429251314491",
-      "type": "journalArticle"
+      "title": "How Probing for Problems and Bias Affects Perceptions of AI Chatbot Trustworthiness",
+      "authors": "Tolsdorf, Luo, Kodwani, et al.",
+      "year": "2026",
+      "url": "",
+      "type": "conferencePaper"
     },
     {
       "title": "Public Concerns About AI Are Getting Lost in Translation",
@@ -272,35 +237,21 @@
       "type": "report"
     },
     {
-      "title": "”Because AI is 100% right and safe”: User Attitudes and Sources of AI Authority in India | Proceedings of the 2022 CHI Conference on Human Factors in Computing Systems",
-      "authors": "Kapania, Siy, Clapper, et al.",
-      "year": "2022",
-      "url": "https://dl.acm.org/doi/10.1145/3491102.3517533",
+      "title": "Safety Perceptions of Generative AI Conversational Agents: Uncovering Perceptual Differences in Trust, Risk, and Fairness",
+      "authors": "Tolsdorf, Luo, Kodwani, et al.",
+      "year": "2025",
+      "url": "https://www.usenix.org/conference/soups2025/presentation/tolsdorf",
       "type": "conferencePaper"
     },
     {
-      "title": "Trust in Automation: Integrating Empirical Evidence on Factors That Influence Trust",
-      "authors": "Hoff, Bashir",
-      "year": "2014",
-      "url": "https://journals.sagepub.com/doi/10.1177/0018720814547570",
+      "title": "Lower Artificial Intelligence Literacy Predicts Greater AI Receptivity",
+      "authors": "Tully, Longoni, Appel",
+      "year": "2025",
+      "url": "https://doi.org/10.1177/00222429251314491",
       "type": "journalArticle"
     }
   ],
   "trustedInfrastructure": [
-    {
-      "title": "Centering Racial Equity: A Toolkit for Centering Racial Equity Throughout Data Integration 2.0",
-      "authors": "Actionable Intelligence for Social Policy (AISP)",
-      "year": "2025",
-      "url": "https://aisp.upenn.edu/centering-equity/",
-      "type": "report"
-    },
-    {
-      "title": "Democratizing AI: open-source scalable LLM training on GPU-based supercomputers",
-      "authors": "Singh, Singhania, Ranjan, et al.",
-      "year": "2024",
-      "url": "https://ieeexplore.ieee.org/document/10793182/",
-      "type": "conferencePaper"
-    },
     {
       "title": "Data Governance Is Not Ready for AI",
       "authors": "Aaronson",
@@ -316,11 +267,25 @@
       "type": "report"
     },
     {
+      "title": "From Pixels to Prose: A Large Dataset of Dense Image Captions",
+      "authors": "Singla, Yue, Paul, et al.",
+      "year": "2024",
+      "url": "http://arxiv.org/abs/2406.10328",
+      "type": "preprint"
+    },
+    {
       "title": "Data Disquiet: Concerns about the Governance of Data for Generative AI",
       "authors": "Aaronson",
       "year": "2024",
       "url": "https://www.cigionline.org/publications/data-disquiet-concerns-about-the-governance-of-data-for-generative-ai/",
       "type": "webpage"
+    },
+    {
+      "title": "Democratizing AI: open-source scalable LLM training on GPU-based supercomputers",
+      "authors": "Singh, Singhania, Ranjan, et al.",
+      "year": "2024",
+      "url": "https://ieeexplore.ieee.org/document/10793182/",
+      "type": "conferencePaper"
     }
   ],
   "e1": [],

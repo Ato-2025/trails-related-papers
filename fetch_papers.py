@@ -2,17 +2,16 @@
 """
 fetch_papers.py  —  build resources.json for the TRAILS trust-framework diagram.
 
-Reads the public TRAILS Zotero group (no API key needed) and collects every
-paper tagged with a framework-component tag of the form:
+Reads the public TRAILS Zotero group (no API key needed) and assigns papers to
+framework components two ways:
 
-    tf:trust-proxies     tf:ai-system          tf:tai-research-team
-    tf:trust-public      tf:trusted-infrastructure   tf:trust-institution
-    tf:trust-intermediaries   tf:trust-representatives
+  1. CURATED (built in below): a hand-picked title -> component mapping, so the
+     site is populated out of the box with no Zotero tagging required.
+  2. TAGS (optional): any paper tagged in Zotero with a tf: tag, e.g.
+     tf:trust-proxies, tf:ai-system, tf:trust-public ...  is also included.
 
-(Edges can be tagged too, e.g. tf:proxies-ai, tf:build — optional.)
-
-A paper may carry several tf: tags; it then appears under each component.
-Output: resources.json keyed by diagram node/edge id.
+A paper may land under several components. Real URLs/authors/years come straight
+from the live library. Output: resources.json keyed by diagram node/edge id.
 
 Run:  python3 fetch_papers.py
 """
@@ -25,11 +24,10 @@ from collections import defaultdict
 
 GROUP_ID = "5266609"
 BASE = f"https://api.zotero.org/groups/{GROUP_ID}"
-HEADERS = {"User-Agent": "trails-related-papers/0.2", "Zotero-API-Version": "3"}
+HEADERS = {"User-Agent": "trails-related-papers/0.3", "Zotero-API-Version": "3"}
 
-# friendly tag slug  ->  diagram id used in TrustNetworkDiagram.jsx
+# friendly tf: tag slug -> diagram id
 ALIASES = {
-    # nodes
     "trust-proxies": "trustProxies", "trustproxies": "trustProxies", "proxies": "trustProxies",
     "ai-system": "aiSystem", "aisystem": "aiSystem", "ai": "aiSystem",
     "tai-research-team": "taiResearchTeam", "tairesearchteam": "taiResearchTeam", "tai": "taiResearchTeam",
@@ -38,7 +36,6 @@ ALIASES = {
     "trust-representatives": "trustRepresentatives", "trustrepresentatives": "trustRepresentatives",
     "trust-public": "trustPublic", "trustpublic": "trustPublic", "public": "trustPublic",
     "trusted-infrastructure": "trustedInfrastructure", "trustedinfrastructure": "trustedInfrastructure", "infrastructure": "trustedInfrastructure",
-    # edges (optional)
     "proxies-ai": "e1", "build": "e2", "access": "e2", "support": "e3",
     "rely-on-use": "e4", "interact": "e5", "inform": "e6",
     "stand-in-for": "e7", "participatory": "participatory",
@@ -47,6 +44,68 @@ ALIASES = {
 ALL_KEYS = ["trustProxies", "aiSystem", "taiResearchTeam", "trustInstitution",
             "trustIntermediaries", "trustRepresentatives", "trustPublic", "trustedInfrastructure",
             "e1", "e2", "e3", "e4", "e5", "e6", "e7", "participatory"]
+
+# Curated title -> component mapping (lowercase substrings; verified against the library).
+CURATED = {
+    "taiResearchTeam": [
+        "epistemologies of trust",
+        "(re)conceptualizing trustworthy ai",
+        "can we make sense of the notion of trustworthy technology",
+        "formalizing trust in artificial intelligence",
+        "the values encoded in machine learning research",
+        "what we talk about when we talk about trust",
+    ],
+    "trustProxies": [
+        "a survey of confidence estimation and calibration",
+        "how reliable are ai user studies",
+        "stereotyping norwegian salmon",
+        "is there a trade-off between fairness and accuracy",
+        "psychometric validation of the pailq-6",
+    ],
+    "aiSystem": [
+        "propensitybench",
+        "mechanistic interpretability for ai safety",
+        "certified adversarial robustness via randomized smoothing",
+        "llms know more than they show",
+        "balancing safety and helpfulness in healthcare ai",
+        "challenges in guardrailing large language models for science",
+    ],
+    "trustPublic": [
+        "how americans view ai and its impact",
+        "americans prioritize ai safety and data security",
+        "lower artificial intelligence literacy predicts greater ai receptivity",
+        "public concerns about ai are getting lost in translation",
+        "user attitudes and sources of ai authority in india",
+        "trust in automation: integrating empirical evidence",
+        "surveilling suitability",
+    ],
+    "trustedInfrastructure": [
+        "data governance is not ready for ai",
+        "data disquiet",
+        "democratizing ai: open-source scalable llm training",
+        "centering racial equity",
+        "data governance mapping project",
+    ],
+    "trustIntermediaries": [
+        "nist ai rmp playbook",
+        "building trust in ai",
+        "detecting dataset bias in medical ai",
+        "genai in law: a guide to building trust",
+        "harmful deepfakes in high school contexts",
+    ],
+    "trustRepresentatives": [
+        "connecting participatory ai to trustworthy ai",
+        "open-source and participatory ai as civic science",
+        "applying critical ai literacy within a community-based partnership",
+        "meaningful engagement: lessons from canada",
+        "intergenerational ai literacy",
+    ],
+    "trustInstitution": [
+        "you don't trust a government vaccine",
+        "trust in public health institutions moderates",
+        "trust and antitrust",
+    ],
+}
 
 
 def get(url):
@@ -77,14 +136,11 @@ def parse_year(date):
 
 
 def format_authors(creators):
-    names = [c.get("lastName") or c.get("name", "")
-             for c in creators if c.get("creatorType") == "author"]
+    names = [c.get("lastName") or c.get("name", "") for c in creators if c.get("creatorType") == "author"]
     names = [n for n in names if n]
     if not names:
         return ""
-    if len(names) > 3:
-        return ", ".join(names[:3]) + ", et al."
-    return ", ".join(names)
+    return ", ".join(names[:3]) + (", et al." if len(names) > 3 else "")
 
 
 def best_url(d):
@@ -96,25 +152,30 @@ def best_url(d):
 
 
 def normalize(tag):
-    # "tf:Trust Proxies" -> "trust-proxies"
     slug = tag.split(":", 1)[1] if ":" in tag else tag
     return re.sub(r"[\s_]+", "-", slug.strip().lower())
 
 
-def extract(item):
-    """Return (list_of_component_keys, paper_dict)."""
+def keys_for(item):
     d = item["data"]
-    keys, unknown = [], []
+    title = clean_title(d.get("title", ""))
+    tl = title.lower()
+    keys, unknown = set(), []
+    # curated title match
+    for comp, subs in CURATED.items():
+        if any(s in tl for s in subs):
+            keys.add(comp)
+    # tf: tags
     for tg in d.get("tags", []):
         t = tg.get("tag", "")
         if t.lower().startswith("tf:"):
             slug = normalize(t)
             if slug in ALIASES:
-                keys.append(ALIASES[slug])
+                keys.add(ALIASES[slug])
             else:
                 unknown.append(t)
     paper = {
-        "title": clean_title(d.get("title", "")),
+        "title": title,
         "authors": format_authors(d.get("creators", [])),
         "year": parse_year(d.get("date", "")),
         "url": best_url(d),
@@ -129,35 +190,35 @@ def main():
     print(f"  scanned {len(items)} items\n")
 
     buckets = defaultdict(list)
+    seen = defaultdict(set)
     unknown_tags = set()
     tagged = 0
     for it in items:
-        keys, paper, unknown = extract(it)
+        keys, paper, unknown = keys_for(it)
         unknown_tags.update(unknown)
         if keys:
             tagged += 1
-            for k in keys:
+        for k in keys:
+            sig = (paper["title"], paper["url"])
+            if sig not in seen[k]:
+                seen[k].add(sig)
                 buckets[k].append(paper)
 
-    # sort each component's papers newest-first
-    resources = {k: [] for k in ALL_KEYS}
-    for k, papers in buckets.items():
-        resources[k] = sorted(papers, key=lambda p: p["year"], reverse=True)
+    resources = {k: sorted(buckets.get(k, []), key=lambda p: p["year"], reverse=True) for k in ALL_KEYS}
 
-    with open("resources.json", "w") as f:
+    with open("resources.json", "w", encoding="utf-8") as f:
         json.dump(resources, f, indent=2, ensure_ascii=False)
 
-    print(f"Papers carrying a tf: tag: {tagged}\n")
+    print(f"Papers assigned to at least one component: {tagged}\n")
     print("PER COMPONENT:")
     for k in ALL_KEYS:
-        n = len(resources[k])
-        if n:
-            print(f"  {n:>3}  {k}")
+        if resources[k]:
+            print(f"  {len(resources[k]):>3}  {k}")
     empty = [k for k in ALL_KEYS if not resources[k]]
     if empty:
-        print("\n  (no papers yet for: " + ", ".join(empty) + ")")
+        print("\n  (still empty: " + ", ".join(empty) + ")")
     if unknown_tags:
-        print("\n  unrecognized tf: tags (fix the tag or add an alias):")
+        print("\n  unrecognized tf: tags:")
         for t in sorted(unknown_tags):
             print("    " + t)
     print("\nWrote resources.json")

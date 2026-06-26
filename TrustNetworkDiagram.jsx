@@ -412,9 +412,9 @@ function SectionLabel({ children }) {
 function ResourceList({ papers }) {
   if (!papers || papers.length === 0) {
     return (
-      <div style={{ display: "flex", alignItems: "center", gap: 10, background: mix(PAPER, "#fff", 0.4), border: `1px dashed ${mix(PAPER, INK, 0.3)}`, borderRadius: 10, padding: "12px 14px", color: INK_SOFT, fontSize: 12.5 }}>
-        <BookOpen size={16} style={{ flex: "0 0 auto" }} />
-        No TRAILS publications tagged for this yet. Tag papers in Zotero with the matching <code style={{ fontFamily: FONT }}>tf:</code> tag and re-run fetch_papers.py.
+      <div style={{ display: "flex", alignItems: "flex-start", gap: 10, background: mix(PAPER, "#fff", 0.4), border: `1px dashed ${mix(PAPER, INK, 0.3)}`, borderRadius: 10, padding: "12px 14px", color: INK_SOFT, fontSize: 12.5, lineHeight: 1.6 }}>
+        <BookOpen size={16} style={{ flex: "0 0 auto", marginTop: 2 }} />
+        <span>No TRAILS publications tagged for this yet. Tag papers in Zotero with the matching <code style={{ fontFamily: FONT, fontWeight: 700 }}>tf:</code> tag and re-run fetch_papers.py.</span>
       </div>
     );
   }

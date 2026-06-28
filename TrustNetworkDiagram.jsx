@@ -200,7 +200,7 @@ export default function TrustNetworkDiagram() {
   const toggleEdge = (id) => setSel((s) => (s && s.type === "edge" && s.id === id ? null : { type: "edge", id }));
 
   return (
-    <div ref={rootRef} style={{ position: "relative", width: "100%", height: "100%", minHeight: "100vh", overflow: "hidden", background: PAPER, fontFamily: FONT, color: INK }}>
+    <div style={{ position: "relative", display: "flex", flexDirection: "column", width: "100%", height: "100%", minHeight: "100vh", overflow: "hidden", background: PAPER, fontFamily: FONT, color: INK }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
         @keyframes tnd-march { to { stroke-dashoffset: -52; } }
@@ -211,6 +211,17 @@ export default function TrustNetworkDiagram() {
         .tnd-scroll::-webkit-scrollbar-thumb { background: ${mix(PAPER, INK, 0.25)}; border-radius: 6px; }
       `}</style>
 
+      <header style={{
+        flex: "0 0 auto", padding: "16px 24px 14px",
+        borderBottom: `1px solid ${mix(PAPER, INK, 0.12)}`,
+        background: PAPER, zIndex: 5,
+      }}>
+        <h1 style={{ margin: 0, fontSize: "clamp(18px, 2.3vw, 26px)", fontWeight: 700, letterSpacing: ".4px", color: INK }}>
+          The TRAILS Trust Framework
+        </h1>
+      </header>
+
+      <div ref={rootRef} style={{ position: "relative", flex: "1 1 auto", minHeight: 0, overflow: "hidden" }}>
       <div style={{ position: "absolute", inset: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
         <div style={{ width: W * scale, height: H * scale }}>
           <div
@@ -326,6 +337,7 @@ export default function TrustNetworkDiagram() {
           </div>
         </div>
       </div>
+      </div>
 
       {!sel && (
         <div style={{ position: "absolute", bottom: 16, left: 0, right: 0, textAlign: "center", pointerEvents: "none", color: INK_SOFT, fontSize: 12.5, letterSpacing: ".3px" }}>
@@ -425,8 +437,24 @@ function ResourceList({ papers }) {
   );
 }
 
+function cleanUrl(raw) {
+  if (!raw) return "";
+  let u = String(raw).trim();
+  // collapse an accidental doubled prefix: https://doi.org/https://doi.org/...
+  u = u.replace(/^https?:\/\/(dx\.)?doi\.org\/(https?:\/\/)/i, "$2");
+  // bare DOI like 10.1145/xxxxx -> add the resolver
+  if (/^10\.\d{4,}\//.test(u)) u = "https://doi.org/" + u;
+  // doi.org/... or www... without a scheme
+  if (/^(dx\.)?doi\.org\//i.test(u)) u = "https://" + u;
+  if (/^www\./i.test(u)) u = "https://" + u;
+  return u;
+}
+
 function ResourceLink({ p }) {
   const meta = [p.authors, p.year].filter(Boolean).join(" · ");
+  const cleaned = cleanUrl(p.url);
+  const hasUrl = Boolean(cleaned);
+  const href = cleaned || `https://scholar.google.com/scholar?q=${encodeURIComponent(p.title || "")}`;
   const inner = (
     <>
       <BookOpen size={15} style={{ flex: "0 0 auto", color: INK_SOFT, marginTop: 2 }} />
@@ -434,7 +462,7 @@ function ResourceLink({ p }) {
         <span style={{ fontSize: 13, fontWeight: 600, color: INK, display: "block", lineHeight: 1.4 }}>{p.title || "(untitled)"}</span>
         {meta && <span style={{ fontSize: 11.5, color: INK_SOFT }}>{meta}</span>}
       </span>
-      {p.url && <ExternalLink size={13} style={{ flex: "0 0 auto", color: INK_SOFT, marginLeft: "auto", marginTop: 3 }} />}
+      <ExternalLink size={13} style={{ flex: "0 0 auto", color: INK_SOFT, marginLeft: "auto", marginTop: 3 }} />
     </>
   );
   const style = {
@@ -442,9 +470,13 @@ function ResourceLink({ p }) {
     background: mix(PAPER, "#fff", 0.55), border: `1px solid ${mix(PAPER, INK, 0.16)}`,
     borderRadius: 10, padding: "10px 12px", color: INK,
   };
-  return p.url
-    ? <a href={p.url} target="_blank" rel="noreferrer" style={{ ...style, cursor: "pointer" }}>{inner}</a>
-    : <div style={style}>{inner}</div>;
+  return (
+    <a href={href} target="_blank" rel="noreferrer"
+       title={hasUrl ? "Open paper" : "Search for this paper"}
+       style={{ ...style, cursor: "pointer" }}>
+      {inner}
+    </a>
+  );
 }
 
 function QuestionList({ questions, accent }) {

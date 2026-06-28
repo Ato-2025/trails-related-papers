@@ -212,12 +212,12 @@ export default function TrustNetworkDiagram() {
       `}</style>
 
       <header style={{
-        flex: "0 0 auto", padding: "16px 24px 14px",
+        flex: "0 0 auto", padding: "16px 24px 14px", textAlign: "center",
         borderBottom: `1px solid ${mix(PAPER, INK, 0.12)}`,
         background: PAPER, zIndex: 5,
       }}>
         <h1 style={{ margin: 0, fontSize: "clamp(18px, 2.3vw, 26px)", fontWeight: 700, letterSpacing: ".4px", color: INK }}>
-          The TRAILS Trust Framework
+          Trust Network Diagram
         </h1>
       </header>
 

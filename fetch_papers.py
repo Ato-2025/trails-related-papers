@@ -165,7 +165,14 @@ def format_authors(cr):
     n = [x for x in n if x]
     return (", ".join(n[:3]) + (", et al." if len(n) > 3 else "")) if n else ""
 def best_url(d):
-    return d.get("url") or ("https://doi.org/" + d["DOI"].strip() if d.get("DOI") else "")
+    url = (d.get("url") or "").strip()
+    if url:
+        return url
+    doi = (d.get("DOI") or "").strip()
+    if doi:
+        doi = re.sub(r"^https?://(dx\.)?doi\.org/", "", doi, flags=re.I)  # strip any existing resolver
+        return "https://doi.org/" + doi
+    return ""
 def normalize(tag):
     s = tag.split(":", 1)[1] if ":" in tag else tag
     return re.sub(r"[\s_]+", "-", s.strip().lower())
@@ -209,6 +216,8 @@ def main():
         unknown_tags.update(unk)
         if ks:
             tagged += 1
+        if not paper["url"]:
+            continue   # only include papers that have a link
         for k in ks:
             sig = (paper["title"], paper["url"])
             if sig not in seen[k]:

@@ -62,25 +62,11 @@
       "title": "Robustness of AI-Image Detectors: Fundamental Limits and Practical Attacks",
       "authors": "Saberi, Sadasivan, Rezaei, et al.",
       "year": "2024",
-      "url": "https://doi.org/https://doi.org/10.48550/arXiv.2310.00076",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Can Requirements Engineering Be Used to Manage Systemic Bias in AI Systems?",
-      "authors": "Broniatowski",
-      "year": "2023",
-      "url": "",
+      "url": "https://doi.org/10.48550/arXiv.2310.00076",
       "type": "conferencePaper"
     }
   ],
   "taiResearchTeam": [
-    {
-      "title": "Fuzzy-trace theory as a source of design goals for trustworthy artificial intelligence",
-      "authors": "Broniatowski, Reyna",
-      "year": "2027",
-      "url": "",
-      "type": "bookSection"
-    },
     {
       "title": "Project Managers Facilitate Interdisciplinary Collaboration in AI Research",
       "authors": "Dalmeijer, Robinson, Cambridge, et al.",
@@ -145,7 +131,7 @@
       "title": "Talking to a Brick Wall: The US Government’s Response to Public Comments on AI",
       "authors": "Aaronson",
       "year": "2025",
-      "url": "",
+      "url": "https://www.cigionline.org/publications/talking-to-a-brick-wall-the-us-governments-response-to-public-comments-on-ai/",
       "type": "report"
     },
     {
@@ -168,42 +154,14 @@
       "year": "2023",
       "url": "https://papers.ssrn.com/abstract=4554650",
       "type": "preprint"
-    },
-    {
-      "title": "Harmful Deepfakes in High School Contexts: Co-designing Recommendations for Policy, Practices, and Design",
-      "authors": "Byrne, Pieters",
-      "year": "0025",
-      "url": "",
-      "type": "conferencePaper"
     }
   ],
   "trustRepresentatives": [
     {
-      "title": "Applying critical AI literacy within a community-based partnership: Insights from youth and caregiver engagement",
-      "authors": "Rabaan, Avery, Erete",
-      "year": "2026",
-      "url": "",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Meaningful Engagement: Lessons from Canada and Other Democracies",
-      "authors": "Aaronson",
-      "year": "2026",
-      "url": "",
-      "type": "conferencePaper"
-    },
-    {
-      "title": "Intergenerational AI literacy: Centering identity, community, and creative futures",
-      "authors": "Rabaan, Erete",
-      "year": "2026",
-      "url": "",
-      "type": "conferencePaper"
-    },
-    {
       "title": "Frameworks, Methods and Shared Tasks: Connecting Participatory AI to Trustworthy AI Through a Systematic Review of Global Projects",
       "authors": "Magana, Shilton",
       "year": "2025",
-      "url": "https://doi.org/https://doi.org/10.1145/3715275.373214",
+      "url": "https://doi.org/10.1145/3715275.373214",
       "type": "conferencePaper"
     },
     {
@@ -223,17 +181,10 @@
       "type": "conferencePaper"
     },
     {
-      "title": "How Probing for Problems and Bias Affects Perceptions of AI Chatbot Trustworthiness",
-      "authors": "Tolsdorf, Luo, Kodwani, et al.",
-      "year": "2026",
-      "url": "",
-      "type": "conferencePaper"
-    },
-    {
       "title": "Public Concerns About AI Are Getting Lost in Translation",
       "authors": "Aaronson, Moreno",
       "year": "2025",
-      "url": "",
+      "url": "https://www.cigionline.org/publications/public-concerns-about-ai-are-getting-lost-in-translation/",
       "type": "report"
     },
     {
